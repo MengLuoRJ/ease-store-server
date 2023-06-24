@@ -4,6 +4,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy, StrategyOptions } from 'passport-jwt';
 import { Repository } from 'typeorm';
+import { Request } from 'express';
 import { RedisCacheService } from 'src/modules/redis-cache/redis-cache.service';
 import { User } from 'src/entities/user.entity';
 
@@ -16,7 +17,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   ) {
     super({
       jwtFromRequest: ExtractJwt.fromExtractors([
-        (request) =>
+        (request: Request) =>
           request?.cookies
             ? request.cookies[configService.get<string>('JWT_COOKIE_NAME')]
             : null,
@@ -29,7 +30,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
 
   async validate(request: any, payload: any) {
     const token = ExtractJwt.fromExtractors([
-      (request) =>
+      (request: Request) =>
         request?.cookies
           ? request.cookies[this.configService.get<string>('JWT_COOKIE_NAME')]
           : null,
