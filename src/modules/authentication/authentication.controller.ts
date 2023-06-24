@@ -7,8 +7,8 @@ import {
   Get,
 } from '@nestjs/common';
 import { AuthenticationService } from './authentication.service';
-import { Public } from 'src/common/decorators/public.decorator';
-import { LocalAuthGuard } from 'src/common/guards/local-auth.guard';
+import { Public } from '../../common/decorators/public.decorator';
+import { LocalAuthGuard } from '../../common/guards/local-auth.guard';
 import { LoginTelnumDto } from './dtos/login-telnum.dto';
 
 @Controller('authentication')
