@@ -23,8 +23,8 @@ export class OssService {
     }
   };
 
-  private async uploadFile(file: any, filePath: string, fileName: string) {
-    return await this.cos().putObject(
+  private uploadFile(file: any, filePath: string, fileName: string) {
+    return this.cos().putObject(
       {
         Bucket: this.bucket,
         Region: this.region,
@@ -40,7 +40,7 @@ export class OssService {
     );
   }
 
-  private async getUrl(filePath: string, fileName: string) {
+  private getUrl(filePath: string, fileName: string) {
     return this.cos().getObjectUrl(
       {
         Bucket: this.bucket,
@@ -57,9 +57,9 @@ export class OssService {
     );
   }
 
-  async uploadSupplyDemandPicture(file: any, fileName: string) {
-    const filePath = '/demand-picture';
-    await this.uploadFile(file, filePath, fileName);
-    return await this.getUrl(filePath, fileName);
+  async uploadMerchandisePicture(file: any, fileName: string) {
+    const filePath = '/merchandise-picture';
+    this.uploadFile(file, filePath, fileName);
+    return this.getUrl(filePath, fileName);
   }
 }
