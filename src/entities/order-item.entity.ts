@@ -12,7 +12,10 @@ export class Merchandise {
   id: number;
 
   @Column()
-  name: string;
+  order_id: number;
+
+  @Column()
+  merchandise_id: number;
 
   @Column()
   price: number;
@@ -20,25 +23,10 @@ export class Merchandise {
   @Column({
     nullable: true,
   })
-  specs: string;
-
-  @Column({
-    nullable: true,
-  })
-  category: string;
+  price_settlement?: number;
 
   @Column()
-  shilf_life: number;
-
-  @Column({
-    nullable: true,
-  })
-  tags: string;
-
-  @Column({
-    nullable: true,
-  })
-  quick_tags: string;
+  count: number;
 
   @UpdateDateColumn({ type: 'timestamptz' })
   updated_at: Date;

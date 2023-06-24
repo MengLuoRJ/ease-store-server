@@ -6,39 +6,39 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 
+export enum PaymentMethod {
+  ALIPAY = 'alipay',
+  WECHAT = 'wechat',
+  UNIONPAY = 'unionpay',
+  CASH = 'cash',
+}
+
 @Entity()
-export class Merchandise {
+export class Order {
   @PrimaryGeneratedColumn()
   id: number;
 
   @Column()
-  name: string;
+  code: string;
 
+  /**
+   * 订单金额
+   */
   @Column()
-  price: number;
+  amount: string;
 
   @Column({
-    nullable: true,
+    type: 'enum',
+    enum: PaymentMethod,
+    default: PaymentMethod.CASH,
   })
-  specs: string;
+  payment_method: PaymentMethod;
 
-  @Column({
-    nullable: true,
-  })
-  category: string;
-
+  /**
+   * 订单状态
+   */
   @Column()
-  shilf_life: number;
-
-  @Column({
-    nullable: true,
-  })
-  tags: string;
-
-  @Column({
-    nullable: true,
-  })
-  quick_tags: string;
+  status: string;
 
   @UpdateDateColumn({ type: 'timestamptz' })
   updated_at: Date;
