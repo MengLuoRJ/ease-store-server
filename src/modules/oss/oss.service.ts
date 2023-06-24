@@ -3,7 +3,7 @@ import {
   MODULE_OPTIONS_TOKEN,
   OssModuleOptions,
 } from './oss.module-definition';
-import * as COS from 'cos-nodejs-sdk-v5';
+import { default as COS } from 'cos-nodejs-sdk-v5';
 
 @Injectable()
 export class OssService {
