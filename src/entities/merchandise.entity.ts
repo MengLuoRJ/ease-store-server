@@ -15,7 +15,15 @@ export class Merchandise {
   name: string;
 
   @Column()
+  barcode: string;
+
+  @Column()
   price: number;
+
+  @Column({
+    nullable: true,
+  })
+  picture_url: string;
 
   @Column({
     nullable: true,
