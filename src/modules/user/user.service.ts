@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from '../../entities/user.entity';
 import { Repository } from 'typeorm';
@@ -23,7 +23,7 @@ export class UserService {
       },
     });
     if (!user) {
-      throw new Error('User not found');
+      throw new NotFoundException(`User with uuid ${uuid} not found`);
     }
     return user;
   }
@@ -35,7 +35,7 @@ export class UserService {
       },
     });
     if (!user) {
-      throw new Error('User not found');
+      throw new NotFoundException(`User with telnum ${telnum} not found`);
     }
     return user;
   }
