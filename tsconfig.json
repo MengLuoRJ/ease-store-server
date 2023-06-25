@@ -1,4 +1,5 @@
 {
+  "include": ["nest-cli.json", "src/**/*", "src/**/*.ts"],
   "compilerOptions": {
     "module": "commonjs",
     "declaration": true,
@@ -16,6 +17,10 @@
     "noImplicitAny": false,
     "strictBindCallApply": false,
     "forceConsistentCasingInFileNames": false,
-    "noFallthroughCasesInSwitch": false
+    "noFallthroughCasesInSwitch": false,
+    // "composite": true,
+    "paths": {
+      "@/*": ["./src/*"]
+    }
   }
 }
