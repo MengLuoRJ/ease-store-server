@@ -13,6 +13,13 @@ export enum PaymentMethod {
   CASH = 'cash',
 }
 
+export enum OrderStatus {
+  CREATED = 'created',
+  CREDIT = 'credit',
+  PAID = 'paid',
+  CLOSED = 'closed',
+}
+
 @Entity()
 export class Order {
   @PrimaryGeneratedColumn()
@@ -37,8 +44,18 @@ export class Order {
   /**
    * 订单状态
    */
-  @Column()
-  status: string;
+  @Column({
+    type: 'enum',
+    enum: OrderStatus,
+    default: OrderStatus.CREATED,
+  })
+  status: OrderStatus;
+
+  @Column({ type: 'timestamptz' })
+  start_at: Date;
+
+  @Column({ type: 'timestamptz' })
+  close_at: Date;
 
   @UpdateDateColumn({ type: 'timestamptz' })
   updated_at: Date;

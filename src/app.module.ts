@@ -13,6 +13,7 @@ import redisConfig from './config/redis.config';
 import ossConfig from './config/oss.config';
 import { APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
 import { JwtAuthGuard } from './common/guards/jwt-auth.guard';
+import { OrderModule } from './modules/order/order.module';
 
 @Module({
   imports: [
@@ -41,6 +42,7 @@ import { JwtAuthGuard } from './common/guards/jwt-auth.guard';
     MerchandiseModule,
     UserModule,
     AuthenticationModule,
+    OrderModule,
   ],
   controllers: [AppController],
   providers: [
