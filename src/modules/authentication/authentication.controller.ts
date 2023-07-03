@@ -32,9 +32,6 @@ export class AuthenticationController {
     return await this.authenticationService.signToken(
       request.user.uuid,
       request.headers['user-agent'],
-      request.headers['x-forwarded-for']
-        ? request.headers['x-forwarded-for'].split(',')[0].trim()
-        : request.headers['x-real-ip'],
     );
   }
 

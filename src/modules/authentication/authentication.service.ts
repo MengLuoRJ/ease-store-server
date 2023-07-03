@@ -15,8 +15,8 @@ export class AuthenticationService {
     private readonly userRepository: Repository<User>,
   ) {}
 
-  async signToken(uuid: string, ua?: string, ip?: string) {
-    const token = this.jwtService.sign({ uuid, ua, ip });
+  async signToken(uuid: string, ua?: string) {
+    const token = this.jwtService.sign({ uuid, ua });
     await this.redisCacheService.set(
       ua ? `jwt-token:${uuid}:${ua}` : `jwt-token:${uuid}`,
       token,

@@ -16,6 +16,10 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   ) {
     super({
       jwtFromRequest: ExtractJwt.fromExtractors([
+        (request) =>
+          request?.cookies
+            ? request.cookies[configService.get<string>('JWT_COOKIE_NAME')]
+            : null,
         ExtractJwt.fromAuthHeaderAsBearerToken(),
       ]),
       secretOrKey: configService.get('JWT_SECRET'),
@@ -25,23 +29,19 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
 
   async validate(request: any, payload: any) {
     const token = ExtractJwt.fromExtractors([
+      (request) =>
+        request?.cookies
+          ? request.cookies[this.configService.get<string>('JWT_COOKIE_NAME')]
+          : null,
       ExtractJwt.fromAuthHeaderAsBearerToken(),
     ])(request);
     const ua = request.headers['user-agent'];
-    const ip = request.headers['x-forwarded-for']
-      ? request.headers['x-forwarded-for'].split(',')[0].trim()
-      : request.headers['x-real-ip'];
     // get cacheed token
     const cachedToken = await this.redisCacheService.get(
       `jwt-token:${payload.uuid}:${ua}`,
     );
     // check if token exists and is valid
-    if (
-      !cachedToken ||
-      token !== cachedToken ||
-      payload.ua !== ua ||
-      payload.ip !== ip
-    ) {
+    if (!cachedToken || token !== cachedToken || payload.ua !== ua) {
       throw new UnauthorizedException('Unauthorized token');
     }
     // get user
@@ -63,7 +63,6 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     return {
       uuid: user.uuid,
       username: user.username,
-      roles: payload.roles,
     };
   }
 }
