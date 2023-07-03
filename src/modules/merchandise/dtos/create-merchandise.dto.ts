@@ -1,4 +1,4 @@
-import { IsNumber, IsOptional, IsString } from 'class-validator';
+import { IsArray, IsNumber, IsOptional, IsString } from 'class-validator';
 
 export class CreateMerchandiseDto {
   @IsString()
@@ -22,14 +22,20 @@ export class CreateMerchandiseDto {
   @IsString()
   category?: string;
 
-  @IsString()
+  @IsNumber()
   shilf_life: number;
 
   @IsOptional()
-  @IsString()
-  tags?: string;
+  @IsArray()
+  @IsString({
+    each: true,
+  })
+  tags?: string[];
 
   @IsOptional()
-  @IsString()
-  quick_tags?: string;
+  @IsArray()
+  @IsString({
+    each: true,
+  })
+  quick_tags?: string[];
 }

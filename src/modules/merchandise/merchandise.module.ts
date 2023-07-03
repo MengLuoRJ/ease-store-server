@@ -6,7 +6,13 @@ import { Merchandise } from '../../entities/merchandise.entity';
 import { CacheModule } from '@nestjs/cache-manager';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Merchandise]), CacheModule.register()],
+  imports: [
+    TypeOrmModule.forFeature([Merchandise]),
+    CacheModule.register({
+      ttl: 60,
+      max: 10,
+    }),
+  ],
   controllers: [MerchandiseController],
   providers: [MerchandiseService],
 })

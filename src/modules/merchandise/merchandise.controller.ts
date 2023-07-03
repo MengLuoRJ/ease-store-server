@@ -14,6 +14,7 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { CacheInterceptor } from '@nestjs/cache-manager';
+import { PageOptionsDto } from '@/common/dtos/pagination.dto';
 
 @UseInterceptors(CacheInterceptor)
 @Controller('merchandise')
@@ -21,8 +22,8 @@ export class MerchandiseController {
   constructor(private readonly merchandiseService: MerchandiseService) {}
 
   @Get('/all')
-  async findAll() {
-    return await this.merchandiseService.findAll();
+  async findAll(@Query() pageOptionsDto: PageOptionsDto) {
+    return await this.merchandiseService.findAll(pageOptionsDto);
   }
 
   @Get('/id/:id')
@@ -46,7 +47,7 @@ export class MerchandiseController {
     @Param('barcode') barcode: string,
     @UploadedFile() file: Express.Multer.File,
   ) {
-    return await this.merchandiseService.uploadPicture(barcode, file.buffer);
+    return await this.merchandiseService.uploadPicture(barcode, file);
   }
 
   @Post('/create')

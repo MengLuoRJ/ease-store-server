@@ -39,14 +39,16 @@ export class Merchandise {
   shilf_life: number;
 
   @Column({
+    type: 'simple-array',
     nullable: true,
   })
-  tags: string;
+  tags: string[];
 
   @Column({
+    type: 'simple-array',
     nullable: true,
   })
-  quick_tags: string;
+  quick_tags: string[];
 
   @UpdateDateColumn({ type: 'timestamptz' })
   updated_at: Date;
