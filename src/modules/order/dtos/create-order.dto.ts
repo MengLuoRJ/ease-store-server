@@ -1,23 +1,32 @@
-import { OrderStatus, PaymentMethod } from '../../../entities/order.entity';
+import { OrderStatus } from '../../../entities/order.entity';
 import {
   IsArray,
-  IsDateString,
+  IsDate,
   IsEnum,
+  IsNumber,
+  IsOptional,
   IsString,
   ValidateNested,
 } from 'class-validator';
 
 export class CreateOrderDto {
   @IsString()
-  amount: string;
+  user_uuid: string;
 
+  @IsNumber()
+  amount: number;
+
+  @IsOptional()
   @IsString()
-  @IsEnum(PaymentMethod)
-  payment_method: PaymentMethod;
+  payment_method?: string;
 
   @IsString()
   @IsEnum(OrderStatus)
   status: OrderStatus;
+
+  @IsOptional()
+  @IsString()
+  credit_person?: string;
 
   @IsArray()
   @ValidateNested({ each: true })
@@ -28,9 +37,9 @@ export class CreateOrderDto {
     count: number;
   }[];
 
-  @IsDateString()
+  @IsDate()
   start_at: Date;
 
-  @IsDateString()
+  @IsDate()
   close_at: Date;
 }

@@ -10,14 +10,15 @@ import {
 import { OrderService } from './order.service';
 import { CreateOrderDto } from './dtos/create-order.dto';
 import { OrderStatus } from '../../entities/order.entity';
+import { PageOptionsDto } from '@/common/dtos/pagination.dto';
 
 @Controller('order')
 export class OrderController {
   constructor(private readonly orderService: OrderService) {}
 
   @Get('/all')
-  async findAll() {
-    return await this.orderService.findAll();
+  async findAll(@Query() pageOptionsDto: PageOptionsDto) {
+    return await this.orderService.findAll(pageOptionsDto);
   }
 
   @Get('/id/:id')
@@ -28,6 +29,11 @@ export class OrderController {
   @Get('/code/:code')
   async findOneByCode(code: string) {
     return await this.orderService.findOneByCode(code);
+  }
+
+  @Get('/items/:id')
+  async findItems(@Param('id') id: number) {
+    return await this.orderService.findItems(id);
   }
 
   @Post('/create')

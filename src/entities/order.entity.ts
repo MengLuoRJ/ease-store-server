@@ -6,13 +6,6 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 
-export enum PaymentMethod {
-  ALIPAY = 'alipay',
-  WECHAT = 'wechat',
-  UNIONPAY = 'unionpay',
-  CASH = 'cash',
-}
-
 export enum OrderStatus {
   CREATED = 'created',
   CREDIT = 'credit',
@@ -28,18 +21,24 @@ export class Order {
   @Column()
   code: string;
 
+  @Column()
+  user_uuid: string;
+
   /**
    * 订单金额
    */
   @Column()
-  amount: string;
+  amount: number;
 
   @Column({
-    type: 'enum',
-    enum: PaymentMethod,
-    default: PaymentMethod.CASH,
+    nullable: true,
   })
-  payment_method: PaymentMethod;
+  payment_method: string;
+
+  @Column({
+    nullable: true,
+  })
+  credit_person: string;
 
   /**
    * 订单状态

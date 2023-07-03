@@ -5,6 +5,12 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateOrderDto } from './dtos/create-order.dto';
 import { v4 as uuid } from 'uuid';
+import {
+  PageDto,
+  PageMetaDto,
+  PageOptionsDto,
+} from '@/common/dtos/pagination.dto';
+import { Merchandise } from '@/entities/merchandise.entity';
 
 @Injectable()
 export class OrderService {
@@ -15,8 +21,15 @@ export class OrderService {
     private readonly orderItemRepository: Repository<OrderItem>,
   ) {}
 
-  async findAll(): Promise<Order[]> {
-    return await this.orderRepository.find();
+  async findAll(pageOptionsDto: PageOptionsDto): Promise<PageDto<Order>> {
+    const query = this.orderRepository.createQueryBuilder('order');
+    const [items, itemCount] = await query
+      .orderBy('order.created_at', 'DESC')
+      .skip(pageOptionsDto.skip)
+      .take(pageOptionsDto.take)
+      .getManyAndCount();
+    const pageMetaDto = new PageMetaDto({ itemCount, pageOptionsDto });
+    return new PageDto(items, pageMetaDto);
   }
 
   async findOne(id: number): Promise<Order> {
@@ -29,6 +42,22 @@ export class OrderService {
     return await this.orderRepository.findOne({
       where: { code },
     });
+  }
+
+  async findItems(id: number): Promise<OrderItem[]> {
+    // return await this.orderItemRepository.find({
+    //   where: { order_id: id },
+    // });
+    return await this.orderItemRepository
+      .createQueryBuilder('order_item')
+      .where('order_item.order_id = :id', { id })
+      .leftJoinAndMapOne(
+        'order_item.merchandise',
+        Merchandise,
+        'merchandise',
+        'merchandise.id = order_item.merchandise_id',
+      )
+      .getMany();
   }
 
   async create(createOrderDto: CreateOrderDto): Promise<Order> {
