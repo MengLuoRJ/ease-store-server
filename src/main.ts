@@ -2,14 +2,19 @@ import { NestFactory } from '@nestjs/core';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { ValidationPipe } from '@nestjs/common';
 import { AppModule } from './app.module';
+import { ResponseTransformInterceptor } from './common/interceptors/response-transform.interceptor';
+import { ResponseExceptionsFilter } from './common/filters/response-exception.filter';
+import * as cookieParser from 'cookie-parser';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   app.enableCors({
-    origin: ['easestore.aiur.tech', 'http://localhost:8022'],
+    origin: [...process.env.SERVER_CORS_ORIGIN.split(',')],
     credentials: true,
   });
+
+  app.use(cookieParser());
 
   app.useGlobalPipes(
     new ValidationPipe({
@@ -17,6 +22,12 @@ async function bootstrap() {
       transformOptions: { enableImplicitConversion: true },
     }),
   );
+
+  app.useGlobalInterceptors(new ResponseTransformInterceptor());
+
+  if (process.env.NODE_ENV === 'production') {
+    app.useGlobalFilters(new ResponseExceptionsFilter());
+  }
 
   const swaggerConfig = new DocumentBuilder()
     .setTitle('Server API')
