@@ -3,16 +3,9 @@ import { MerchandiseController } from './merchandise.controller';
 import { MerchandiseService } from './merchandise.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Merchandise } from '../../entities/merchandise.entity';
-import { CacheModule } from '@nestjs/cache-manager';
 
 @Module({
-  imports: [
-    TypeOrmModule.forFeature([Merchandise]),
-    CacheModule.register({
-      ttl: 60,
-      max: 10,
-    }),
-  ],
+  imports: [TypeOrmModule.forFeature([Merchandise])],
   controllers: [MerchandiseController],
   providers: [MerchandiseService],
 })

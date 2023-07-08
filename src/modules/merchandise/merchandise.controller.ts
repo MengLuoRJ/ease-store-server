@@ -13,10 +13,11 @@ import {
   UploadedFile,
   UseInterceptors,
 } from '@nestjs/common';
-import { CacheInterceptor } from '@nestjs/cache-manager';
+import { CacheInterceptor, CacheTTL } from '@nestjs/cache-manager';
 import { PageOptionsDto } from '@/common/dtos/pagination.dto';
 
 @UseInterceptors(CacheInterceptor)
+@CacheTTL(30 * 1000)
 @Controller('merchandise')
 export class MerchandiseController {
   constructor(private readonly merchandiseService: MerchandiseService) {}

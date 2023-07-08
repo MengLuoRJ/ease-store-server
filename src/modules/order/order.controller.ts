@@ -6,12 +6,16 @@ import {
   Patch,
   Post,
   Query,
+  UseInterceptors,
 } from '@nestjs/common';
 import { OrderService } from './order.service';
 import { CreateOrderDto } from './dtos/create-order.dto';
 import { OrderStatus } from '../../entities/order.entity';
 import { PageOptionsDto } from '@/common/dtos/pagination.dto';
+import { CacheInterceptor, CacheTTL } from '@nestjs/cache-manager';
 
+@UseInterceptors(CacheInterceptor)
+@CacheTTL(30 * 1000)
 @Controller('order')
 export class OrderController {
   constructor(private readonly orderService: OrderService) {}

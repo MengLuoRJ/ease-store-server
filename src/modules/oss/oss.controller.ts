@@ -1,8 +1,9 @@
-import { CacheInterceptor } from '@nestjs/cache-manager';
+import { CacheInterceptor, CacheTTL } from '@nestjs/cache-manager';
 import { OssService } from './oss.service';
 import { Body, Controller, Post, UseInterceptors } from '@nestjs/common';
 
 @UseInterceptors(CacheInterceptor)
+@CacheTTL(30 * 1000)
 @Controller('oss')
 export class OssController {
   constructor(private readonly ossService: OssService) {}
