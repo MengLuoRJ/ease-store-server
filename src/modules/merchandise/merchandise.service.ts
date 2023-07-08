@@ -55,10 +55,7 @@ export class MerchandiseService {
       '-' +
       uuid().slice(0, 8) +
       file.originalname.substring(file.originalname.lastIndexOf('.'));
-    // const url = await this.ossService.uploadMerchandisePicture(
-    //   file.buffer,
-    //   fileName,
-    // );
+    await this.ossService.uploadMerchandisePicture(file.buffer, fileName);
     return '/merchandise-picture/' + fileName;
   }
 
