@@ -26,12 +26,12 @@ export class OrderController {
   }
 
   @Get('/id/:id')
-  async findOne(id: number) {
+  async findOne(@Param('id') id: number) {
     return await this.orderService.findOne(id);
   }
 
   @Get('/code/:code')
-  async findOneByCode(code: string) {
+  async findOneByCode(@Param('code') code: string) {
     return await this.orderService.findOneByCode(code);
   }
 
