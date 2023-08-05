@@ -17,7 +17,12 @@ export class Merchandise {
   @Column()
   barcode: string;
 
-  @Column()
+  @Column({
+    type: 'numeric',
+    precision: 12,
+    scale: 2,
+    default: 0,
+  })
   price: number;
 
   @Column({
