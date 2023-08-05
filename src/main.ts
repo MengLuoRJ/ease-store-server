@@ -6,6 +6,12 @@ import { ResponseTransformInterceptor } from './common/interceptors/response-tra
 import { ResponseExceptionsFilter } from './common/filters/response-exception.filter';
 import * as cookieParser from 'cookie-parser';
 
+import { types } from 'pg';
+
+types.setTypeParser(types.builtins.NUMERIC, (value: string): number =>
+  parseFloat(value),
+);
+
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
