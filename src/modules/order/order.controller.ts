@@ -14,15 +14,27 @@ import { OrderStatus } from '../../entities/order.entity';
 import { PageOptionsDto } from '@/common/dtos/pagination.dto';
 import { CacheInterceptor, CacheTTL } from '@nestjs/cache-manager';
 
-@UseInterceptors(CacheInterceptor)
-@CacheTTL(30 * 1000)
 @Controller('order')
 export class OrderController {
   constructor(private readonly orderService: OrderService) {}
 
+  @UseInterceptors(CacheInterceptor)
+  @CacheTTL(30 * 1000)
+  @Get('/all/cached')
+  async findAllCached(@Query() pageOptionsDto: PageOptionsDto) {
+    return await this.orderService.findAll(pageOptionsDto);
+  }
+
   @Get('/all')
   async findAll(@Query() pageOptionsDto: PageOptionsDto) {
     return await this.orderService.findAll(pageOptionsDto);
+  }
+
+  @UseInterceptors(CacheInterceptor)
+  @CacheTTL(30 * 1000)
+  @Get('/id/:id/cached')
+  async findOneCached(@Param('id') id: number) {
+    return await this.orderService.findOne(id);
   }
 
   @Get('/id/:id')

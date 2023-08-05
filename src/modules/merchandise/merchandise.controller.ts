@@ -16,20 +16,39 @@ import {
 import { CacheInterceptor, CacheTTL } from '@nestjs/cache-manager';
 import { PageOptionsDto } from '@/common/dtos/pagination.dto';
 
-@UseInterceptors(CacheInterceptor)
-@CacheTTL(30 * 1000)
 @Controller('merchandise')
 export class MerchandiseController {
   constructor(private readonly merchandiseService: MerchandiseService) {}
+
+  @UseInterceptors(CacheInterceptor)
+  @CacheTTL(30 * 1000)
+  @Get('/all/cached')
+  async findAllCached(@Query() pageOptionsDto: PageOptionsDto) {
+    return await this.merchandiseService.findAll(pageOptionsDto);
+  }
 
   @Get('/all')
   async findAll(@Query() pageOptionsDto: PageOptionsDto) {
     return await this.merchandiseService.findAll(pageOptionsDto);
   }
 
+  @UseInterceptors(CacheInterceptor)
+  @CacheTTL(30 * 1000)
+  @Get('/id/:id/cached')
+  async findOneCached(@Param('id') id: number) {
+    return await this.merchandiseService.findOne(id);
+  }
+
   @Get('/id/:id')
   async findOne(@Param('id') id: number) {
     return await this.merchandiseService.findOne(id);
+  }
+
+  @UseInterceptors(CacheInterceptor)
+  @CacheTTL(30 * 1000)
+  @Get('/barcode/:barcode/cached')
+  async findByBarcodeCached(@Param('barcode') barcode: string) {
+    return await this.merchandiseService.findByBarcode(barcode);
   }
 
   @Get('/barcode/:barcode')
